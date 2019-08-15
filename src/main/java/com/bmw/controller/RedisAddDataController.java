@@ -59,7 +59,6 @@ public class RedisAddDataController {
 				line = br.readLine();
 			}
 			ops.set(BMWPocConstants.REDIS_DEALER_MODELS_KEY, objectMapper.writeValueAsString(map));
-			br.close();
 			return map;
 		}catch(IOException e) {
 			logger.error("failed to generate json string", e);
