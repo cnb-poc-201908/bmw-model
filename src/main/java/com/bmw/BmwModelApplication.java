@@ -8,6 +8,7 @@ public class BmwModelApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BmwModelApplication.class, args);
+
 	}
 
 }
