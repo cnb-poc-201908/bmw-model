@@ -30,23 +30,21 @@ public class RedisAddDataController {
 
 	@GetMapping(value = "", produces = "application/json")
 	public Map<String,Map<String, Float>> redis() throws IOException {
-		FileInputStream fis = null;
-		InputStreamReader isr = null;
-		BufferedReader br = null;
-		try {
+
+
+
+		try (
+				FileInputStream fis = new FileInputStream("/Users/xiongl/Desktop/CDK/dealer-model.csv");
+				InputStreamReader isr = new InputStreamReader(fis);
+				BufferedReader br = new BufferedReader(isr);
+
+				){
 			Map<String,Map<String, Float>> map = new HashMap<>();
 
 			// start set data into redis
 			ValueOperations<String, String> ops = redisTemplate.opsForValue();
 			ObjectMapper objectMapper = new ObjectMapper();
 			objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-
-
-
-			fis = new FileInputStream("/Users/xiongl/Desktop/CDK/dealer-model.csv");
-			isr = new InputStreamReader(fis);
-
-			br = new BufferedReader(isr);
 			String line = br.readLine();
 			while(line != null) {
 				String[] items = line.split(",");
@@ -61,20 +59,10 @@ public class RedisAddDataController {
 				line = br.readLine();
 			}
 			ops.set(BMWPocConstants.REDIS_DEALER_MODELS_KEY, objectMapper.writeValueAsString(map));
+			br.close();
 			return map;
 		}catch(IOException e) {
 			logger.error("failed to generate json string", e);
-		}finally {
-
-			if(br!=null) {
-				br.close();
-			}
-			if(isr != null) {
-				isr.close();
-			}
-			if(fis != null) {
-				fis.close();
-			}
 		}
 		return null;
 	}

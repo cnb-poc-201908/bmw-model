@@ -57,15 +57,10 @@ public class DateUtil {
     	return firstDate.compareTo(secondDate);
     }
 
-//    public static void main(String ...dateStr) {
-//    	System.out.print(dateToString(LocalDate.now()));
-//    }
-    
     public static Long intervalDays(String startDateString) {
           Date startDate = stringToDate(startDateString);
           Date endDate = new Date();
           long diff = endDate.getTime() - startDate.getTime();//这样得到的差值是微秒级别
-          Long days = diff / (1000 * 60 * 60 * 24);
-          return days;
+          return diff / (1000 * 60 * 60 * 24);
     }
 }

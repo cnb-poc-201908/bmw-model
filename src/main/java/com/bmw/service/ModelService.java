@@ -34,7 +34,7 @@ public class ModelService {
 	public SortedMap<String, Float> updateModel(String dealerId, Map<String, Float> inputs) {
 		SortedMap<String, Float> map = dealerModels.get(dealerId);
 		Iterator<String> it = inputs.keySet().iterator();
-		if(inputs != null && !inputs.isEmpty()) {
+		if(!inputs.isEmpty()) {
 			while(it.hasNext()) {
 				String key =  it.next();
 				Float value = inputs.get(key);
