@@ -13,4 +13,7 @@ public class BMWPocConstants {
 	public static final Integer REST_ERROR_CODE = -1;
 	public static final Integer REST_SUCCESS_CODE = 0;
 	public static final String DEFAULT_JULIAN_DATE = "2458000";
+	public static final String REDIS_DEALER_MODELS_KEY = "DEALER_MODELS";
+	public static final String START_DEALER_ID = "D0001";
+	public static final String END_DEALER_ID = "D0021";
 }

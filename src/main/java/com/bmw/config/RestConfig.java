@@ -1,17 +1,28 @@
 package com.bmw.config;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.bmw.common.BMWPocConstants;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 public class RestConfig implements WebMvcConfigurer {
@@ -46,4 +57,16 @@ public class RestConfig implements WebMvcConfigurer {
         //3.返回新的CorsFilter.
         return new CorsFilter(configSource);
     }
+
+    @Bean
+    @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
+	public SortedMap<String,SortedMap<String, Float>> dealerModels() throws IOException {
+
+		// start set data into redis
+		ValueOperations<String, String> ops = redisTemplate.opsForValue();
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		return objectMapper.readValue(ops.get(BMWPocConstants.REDIS_DEALER_MODELS_KEY),
+				new TypeReference<TreeMap<String,TreeMap<String, Float>>>(){});
+	}
 }
