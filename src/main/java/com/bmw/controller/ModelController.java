@@ -6,6 +6,7 @@ import java.util.SortedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,12 +33,22 @@ public class ModelController {
 	}
 
 	@PutMapping(value = "/{dealerId}", produces = "application/json")
-	@ApiOperation(value = "订单匹配模型列表接口")
+	@ApiOperation(value = "修改订单匹配模型接口")
 	public RestResponse<Map<String, Map<String, Object>>> updatemodel(
 			@PathVariable(value = "dealerId", required = true) String dealerId,
 			@RequestBody Map<String, Map<String, Object>> inputs) {
 		RestResponse<Map<String, Map<String, Object>>> response = new RestResponse<>();
 		response.setData(modelService.updateModel(dealerId, inputs));
+		return response;
+	}
+
+	@PostMapping(value = "/{dealerId}", produces = "application/json")
+	@ApiOperation(value = "订单匹配模型列表接口")
+	public RestResponse<Map<String, Map<String, Object>>> addModelItem(
+			@PathVariable(value = "dealerId", required = true) String dealerId,
+			@RequestBody Map<String, Map<String, Object>> modelItem) {
+		RestResponse<Map<String, Map<String, Object>>> response = new RestResponse<>();
+		response.setData(modelService.addModelItem(dealerId, modelItem));
 		return response;
 	}
 

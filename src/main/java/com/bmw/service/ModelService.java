@@ -52,6 +52,18 @@ public class ModelService {
 		return map;
 	}
 
+	public Map<String, Map<String, Object>> addModelItem(String dealerId, Map<String, Map<String, Object>> item) {
+		Map<String, Map<String, Object>> map = dealerModels.get(dealerId);
+		Iterator<String> it = item.keySet().iterator();
+		if(!item.isEmpty()) {
+			while(it.hasNext()) {
+				String key =  it.next();
+				map.put(key, item.get(key));
+			}
+		}
+		return map;
+	}
+
 	public Map<String, Map<String, Object>> getOEMModel() {
 		return oemModel;
 	}
