@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import com.bmw.common.BMWPocConstants;
-
 @Service
 public class ModelService {
 
@@ -24,7 +22,7 @@ public class ModelService {
 	private SortedMap<String,SortedMap<String, Float>> dealerModels;
 
 	public SortedMap<String,SortedMap<String, Float>> getModels() {
-		return dealerModels.subMap(BMWPocConstants.START_DEALER_ID, BMWPocConstants.END_DEALER_ID);
+		return dealerModels;
 	}
 
 	public SortedMap<String, Float> getModel(String dealerId) {

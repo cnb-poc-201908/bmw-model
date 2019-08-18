@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,7 @@ public class RedisAddDataController {
 	RedisTemplate<String, String> redisTemplate;
 
 	@GetMapping(value = "", produces = "application/json")
-	public Map<String,Map<String, Float>> redis() throws IOException {
+	public Map<String,Map<String, Object>> redis() throws IOException {
 
 
 
@@ -39,7 +40,7 @@ public class RedisAddDataController {
 				BufferedReader br = new BufferedReader(isr);
 
 				){
-			Map<String,Map<String, Float>> map = new HashMap<>();
+			Map<String,Map<String, Object>> map = new HashMap<>();
 
 			// start set data into redis
 			ValueOperations<String, String> ops = redisTemplate.opsForValue();
@@ -49,11 +50,12 @@ public class RedisAddDataController {
 			while(line != null) {
 				String[] items = line.split(",");
 
-				Map<String, Float> dealerMap = new HashMap<>();
+				Map<String, Object> dealerMap = new HashMap<>();
 				dealerMap.put("StockDepth", Float.valueOf(items[1]));
 				dealerMap.put("FundStatus", Float.valueOf(items[2]));
 				dealerMap.put("SalesAbility", Float.valueOf(items[3]));
-
+				Random random = new Random();
+				dealerMap.put("weight", random.nextInt(10)+1);
 				map.put(items[0], dealerMap);
 
 				line = br.readLine();
