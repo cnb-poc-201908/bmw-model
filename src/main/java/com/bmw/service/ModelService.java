@@ -21,6 +21,9 @@ public class ModelService {
 	@Autowired
 	private SortedMap<String,Map<String, Map<String, Object>>> dealerModels;
 
+	@Autowired
+	private Map<String,Map<String, Object>> oemModel;
+
 	public SortedMap<String,Map<String, Map<String, Object>>> getModels() {
 		return dealerModels;
 	}
@@ -42,5 +45,9 @@ public class ModelService {
 			}
 		}
 		return map;
+	}
+
+	public Map<String, Map<String, Object>> getOEMModel() {
+		return oemModel;
 	}
 }

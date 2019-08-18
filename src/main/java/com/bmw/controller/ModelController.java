@@ -41,6 +41,14 @@ public class ModelController {
 		return response;
 	}
 
+	@GetMapping(value = "/oem", produces = "application/json")
+	@ApiOperation(value = "厂家订单匹配模型详情接口")
+	public RestResponse<Map<String, Map<String, Object>>> getOEMModel() {
+		RestResponse<Map<String, Map<String, Object>>> response = new RestResponse<>();
+		response.setData(modelService.getOEMModel());
+		return response;
+	}
+
 	@GetMapping(value = "/{dealerId}", produces = "application/json")
 	@ApiOperation(value = "订单匹配模型详情接口")
 	public RestResponse<Map<String, Map<String, Object>>> getModel(

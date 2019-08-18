@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -32,7 +33,7 @@ public class RedisAddDataController {
 	@GetMapping(value = "", produces = "application/json")
 	public Map<String,Map<String, Map<String, Object>>> redis() throws IOException {
 
-
+		Random random = new Random();
 
 		try (
 				FileInputStream fis = new FileInputStream("/Users/xiongl/Desktop/CDK/dealer-model.csv");
@@ -49,21 +50,21 @@ public class RedisAddDataController {
 			String line = br.readLine();
 			while(line != null) {
 				String[] items = line.split(",");
-				Random random = new Random();
+
 				Map<String, Map<String, Object>> dealerMap = new HashMap<>();
 				Map<String, Object> valueMap = new HashMap<>();
-				valueMap.put("value", Float.valueOf(items[1]));
-				valueMap.put("weigth", random.nextInt(10)+1);
+				valueMap.put(BMWPocConstants.KEY_NAME_VALUE, Float.valueOf(items[1]));
+				valueMap.put(BMWPocConstants.KEY_NAME_WEIGHT, random.nextInt(10)+1);
 				dealerMap.put("StockDepth", valueMap);
 
 				Map<String, Object> valueMap2 = new HashMap<>();
-				valueMap2.put("value", Float.valueOf(items[2]));
-				valueMap2.put("weigth", random.nextInt(10)+1);
+				valueMap2.put(BMWPocConstants.KEY_NAME_VALUE, Float.valueOf(items[2]));
+				valueMap2.put(BMWPocConstants.KEY_NAME_WEIGHT, random.nextInt(10)+1);
 				dealerMap.put("FundStatus", valueMap2);
 
 				Map<String, Object> valueMap3 = new HashMap<>();
-				valueMap3.put("value", Float.valueOf(items[3]));
-				valueMap3.put("weigth", random.nextInt(10)+1);
+				valueMap3.put(BMWPocConstants.KEY_NAME_VALUE, Float.valueOf(items[3]));
+				valueMap3.put(BMWPocConstants.KEY_NAME_WEIGHT, random.nextInt(10)+1);
 				dealerMap.put("SalesAbility", valueMap3);
 
 				map.put(items[0], dealerMap);
@@ -71,10 +72,57 @@ public class RedisAddDataController {
 				line = br.readLine();
 			}
 			ops.set(BMWPocConstants.REDIS_DEALER_MODELS_KEY, objectMapper.writeValueAsString(map));
+
+			Map<String,Map<String, Object>> oemMap = new HashMap<>();
+			Map<String, Object> colorMap = new HashMap<>();
+			colorMap.put(BMWPocConstants.KEY_NAME_WEIGHT, 7);
+
+
+			String[] colors = new String[] {"300", "475","A72","A75", "A96", "B45", "C25", "C2P"};
+			for(String color : colors) {
+				Map<String, Object> colorWeight = new HashMap<>();
+				colorWeight.put(BMWPocConstants.KEY_NAME_VALUE, getRandomValue(random));
+				colorWeight.put(BMWPocConstants.KEY_NAME_WEIGHT, random.nextInt(10)+1);
+				colorMap.put(color, colorWeight);
+			}
+
+			Map<String, Object> upholsteryMap = new HashMap<>();
+			upholsteryMap.put(BMWPocConstants.KEY_NAME_WEIGHT, 2);
+			String[] upholsteries = new String[] {"KCMY", "KCSW", "LCL5", "LCMY"};
+			for(String upholstery : upholsteries) {
+				Map<String, Object> upholsteryWeigth = new HashMap<>();
+				upholsteryWeigth.put(BMWPocConstants.KEY_NAME_VALUE, getRandomValue(random));
+				upholsteryWeigth.put(BMWPocConstants.KEY_NAME_WEIGHT, random.nextInt(10)+1);
+				upholsteryMap.put(upholstery, upholsteryWeigth);
+			}
+
+
+			Map<String, Object> configMap = new HashMap<>();
+			configMap.put(BMWPocConstants.KEY_NAME_WEIGHT, 1);
+			String[] configs = new String[] {"201805ZOM", "201809ZMC", "201809ZLS", "201809ZOM", "201709ZLS", "201805ZSM", "201801ZSM",
+					"201801ZLS", "201805ZLS", "201709ZSM", "201609ZLU", "201809ZSM", "201609ZOM"};
+			for(String config : configs) {
+				Map<String, Object> configWeigth = new HashMap<>();
+				configWeigth.put(BMWPocConstants.KEY_NAME_VALUE, getRandomValue(random));
+				configWeigth.put(BMWPocConstants.KEY_NAME_WEIGHT, random.nextInt(10)+1);
+				configMap.put(config, configWeigth);
+			}
+
+			oemMap.put("color", colorMap);
+			oemMap.put("upholstery", upholsteryMap);
+			oemMap.put("config", configMap);
+
+			ops.set(BMWPocConstants.REDIS_OEM_MODEL_KEY, objectMapper.writeValueAsString(oemMap));
+
 			return map;
 		}catch(IOException e) {
 			logger.error("failed to generate json string", e);
 		}
 		return null;
+	}
+
+	private Float getRandomValue(Random random) {
+		BigDecimal b = new BigDecimal(random.nextFloat());
+		return b.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
 	}
 }
