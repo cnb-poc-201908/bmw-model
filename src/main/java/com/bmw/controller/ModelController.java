@@ -35,7 +35,7 @@ public class ModelController {
 	@ApiOperation(value = "订单匹配模型列表接口")
 	public RestResponse<Map<String, Map<String, Object>>> updatemodel(
 			@PathVariable(value = "dealerId", required = true) String dealerId,
-			@RequestBody Map<String, Float> inputs) {
+			@RequestBody Map<String, Map<String, Object>> inputs) {
 		RestResponse<Map<String, Map<String, Object>>> response = new RestResponse<>();
 		response.setData(modelService.updateModel(dealerId, inputs));
 		return response;

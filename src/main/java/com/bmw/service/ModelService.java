@@ -32,16 +32,21 @@ public class ModelService {
 		return dealerModels.get(dealerId);
 	}
 
-	public Map<String, Map<String, Object>> updateModel(String dealerId, Map<String, Float> inputs) {
+	public Map<String, Map<String, Object>> updateModel(String dealerId, Map<String, Map<String, Object>> inputs) {
 		Map<String, Map<String, Object>> map = dealerModels.get(dealerId);
 		Iterator<String> it = inputs.keySet().iterator();
 		if(!inputs.isEmpty()) {
 			while(it.hasNext()) {
 				String key =  it.next();
-				Float value = inputs.get(key);
-				Map<String, Object> valueMap = map.get(key);
-				valueMap.put("value", value);
-				logger.info("key is {}, value is {}", key, value);
+				Map<String, Object> destMap = inputs.get(key);
+				Map<String, Object> sourceMap = map.get(key);
+				Iterator<String> subIt = destMap.keySet().iterator();
+				if(!destMap.isEmpty()) {
+					while(subIt.hasNext()) {
+						String subKey = subIt.next();
+						sourceMap.put(subKey, destMap.get(subKey));
+					}
+				}
 			}
 		}
 		return map;
