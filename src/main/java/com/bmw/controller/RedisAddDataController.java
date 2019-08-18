@@ -5,7 +5,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -79,34 +81,46 @@ public class RedisAddDataController {
 
 
 			String[] colors = new String[] {"300", "475","A72","A75", "A96", "B45", "C25", "C2P"};
+			List<Map<String, Object>> colorList = new ArrayList<>();
 			for(String color : colors) {
+				Map<String, Object> colorItem = new HashMap<>();
 				Map<String, Object> colorWeight = new HashMap<>();
 				colorWeight.put(BMWPocConstants.KEY_NAME_VALUE, getRandomValue(random));
 				colorWeight.put(BMWPocConstants.KEY_NAME_WEIGHT, random.nextInt(10)+1);
-				colorMap.put(color, colorWeight);
+				colorItem.put(color, colorWeight);
+				colorList.add(colorItem);
 			}
+			colorMap.put("colors", colorList);
 
 			Map<String, Object> upholsteryMap = new HashMap<>();
 			upholsteryMap.put(BMWPocConstants.KEY_NAME_WEIGHT, 2);
 			String[] upholsteries = new String[] {"KCMY", "KCSW", "LCL5", "LCMY"};
+			List<Map<String, Object>> upholsteryList = new ArrayList<>();
 			for(String upholstery : upholsteries) {
+				Map<String, Object> upholsteryItem = new HashMap<>();
 				Map<String, Object> upholsteryWeigth = new HashMap<>();
 				upholsteryWeigth.put(BMWPocConstants.KEY_NAME_VALUE, getRandomValue(random));
 				upholsteryWeigth.put(BMWPocConstants.KEY_NAME_WEIGHT, random.nextInt(10)+1);
-				upholsteryMap.put(upholstery, upholsteryWeigth);
+				upholsteryItem.put(upholstery, upholsteryWeigth);
+				upholsteryList.add(upholsteryItem);
 			}
+			upholsteryMap.put("upholsteries", upholsteryList);
 
 
 			Map<String, Object> configMap = new HashMap<>();
 			configMap.put(BMWPocConstants.KEY_NAME_WEIGHT, 1);
 			String[] configs = new String[] {"201805ZOM", "201809ZMC", "201809ZLS", "201809ZOM", "201709ZLS", "201805ZSM", "201801ZSM",
 					"201801ZLS", "201805ZLS", "201709ZSM", "201609ZLU", "201809ZSM", "201609ZOM"};
+			List<Map<String, Object>> configList = new ArrayList<>();
 			for(String config : configs) {
+				Map<String, Object> configItem = new HashMap<>();
 				Map<String, Object> configWeigth = new HashMap<>();
 				configWeigth.put(BMWPocConstants.KEY_NAME_VALUE, getRandomValue(random));
 				configWeigth.put(BMWPocConstants.KEY_NAME_WEIGHT, random.nextInt(10)+1);
-				configMap.put(config, configWeigth);
+				configItem.put(config, configWeigth);
+				configList.add(configItem);
 			}
+			configMap.put("configs", configList);
 
 			oemMap.put("color", colorMap);
 			oemMap.put("upholstery", upholsteryMap);
