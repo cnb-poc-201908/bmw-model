@@ -25,27 +25,27 @@ public class ModelController {
 
 	@GetMapping(value = "", produces = "application/json")
 	@ApiOperation(value = "订单匹配模型列表接口")
-	public RestResponse<SortedMap<String,SortedMap<String, Float>>> getModels() {
-		RestResponse<SortedMap<String,SortedMap<String, Float>>> response = new RestResponse<>();
+	public RestResponse<SortedMap<String,Map<String, Map<String, Object>>>> getModels() {
+		RestResponse<SortedMap<String,Map<String, Map<String, Object>>>> response = new RestResponse<>();
 		response.setData(modelService.getModels());
 		return response;
 	}
 
 	@PutMapping(value = "/{dealerId}", produces = "application/json")
 	@ApiOperation(value = "订单匹配模型列表接口")
-	public RestResponse<SortedMap<String, Float>> updatemodel(
+	public RestResponse<Map<String, Map<String, Object>>> updatemodel(
 			@PathVariable(value = "dealerId", required = true) String dealerId,
 			@RequestBody Map<String, Float> inputs) {
-		RestResponse<SortedMap<String, Float>> response = new RestResponse<>();
+		RestResponse<Map<String, Map<String, Object>>> response = new RestResponse<>();
 		response.setData(modelService.updateModel(dealerId, inputs));
 		return response;
 	}
 
 	@GetMapping(value = "/{dealerId}", produces = "application/json")
 	@ApiOperation(value = "订单匹配模型详情接口")
-	public RestResponse<SortedMap<String, Float>> getModel(
+	public RestResponse<Map<String, Map<String, Object>>> getModel(
 			@PathVariable(value = "dealerId", required = true) String dealerId) {
-		RestResponse<SortedMap<String, Float>> response = new RestResponse<>();
+		RestResponse<Map<String, Map<String, Object>>> response = new RestResponse<>();
 		response.setData(modelService.getModel(dealerId));
 		return response;
 	}

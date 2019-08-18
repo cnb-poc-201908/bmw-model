@@ -19,28 +19,28 @@ public class ModelService {
 	private static Logger logger = LoggerFactory.getLogger(ModelService.class);
 
 	@Autowired
-	private SortedMap<String,SortedMap<String, Float>> dealerModels;
+	private SortedMap<String,Map<String, Map<String, Object>>> dealerModels;
 
-	public SortedMap<String,SortedMap<String, Float>> getModels() {
+	public SortedMap<String,Map<String, Map<String, Object>>> getModels() {
 		return dealerModels;
 	}
 
-	public SortedMap<String, Float> getModel(String dealerId) {
+	public Map<String, Map<String, Object>> getModel(String dealerId) {
 		return dealerModels.get(dealerId);
 	}
 
-	public SortedMap<String, Float> updateModel(String dealerId, Map<String, Float> inputs) {
-		SortedMap<String, Float> map = dealerModels.get(dealerId);
+	public Map<String, Map<String, Object>> updateModel(String dealerId, Map<String, Float> inputs) {
+		Map<String, Map<String, Object>> map = dealerModels.get(dealerId);
 		Iterator<String> it = inputs.keySet().iterator();
 		if(!inputs.isEmpty()) {
 			while(it.hasNext()) {
 				String key =  it.next();
 				Float value = inputs.get(key);
-				map.put(key, value);
+				Map<String, Object> valueMap = map.get(key);
+				valueMap.put("value", value);
 				logger.info("key is {}, value is {}", key, value);
 			}
 		}
-
 		return map;
 	}
 }

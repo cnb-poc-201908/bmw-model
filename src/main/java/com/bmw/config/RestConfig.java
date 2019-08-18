@@ -1,9 +1,10 @@
 package com.bmw.config;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedMap;
-import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -60,13 +61,13 @@ public class RestConfig implements WebMvcConfigurer {
 
     @Bean
     @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
-	public SortedMap<String,SortedMap<String, Float>> dealerModels() throws IOException {
+	public SortedMap<String,Map<String, Map<String, Object>>> dealerModels() throws IOException {
 
 		// start set data into redis
 		ValueOperations<String, String> ops = redisTemplate.opsForValue();
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		return objectMapper.readValue(ops.get(BMWPocConstants.REDIS_DEALER_MODELS_KEY),
-				new TypeReference<TreeMap<String,TreeMap<String, Float>>>(){});
+				new TypeReference<SortedMap<String,HashMap<String, HashMap<String, Object>>>>(){});
 	}
 }
