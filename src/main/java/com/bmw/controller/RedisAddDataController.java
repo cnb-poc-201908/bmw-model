@@ -30,7 +30,7 @@ public class RedisAddDataController {
 	RedisTemplate<String, String> redisTemplate;
 
 	@GetMapping(value = "", produces = "application/json")
-	public Map<String,Map<String, Object>> redis() throws IOException {
+	public Map<String,Map<String, Map<String, Object>>> redis() throws IOException {
 
 
 
@@ -40,7 +40,7 @@ public class RedisAddDataController {
 				BufferedReader br = new BufferedReader(isr);
 
 				){
-			Map<String,Map<String, Object>> map = new HashMap<>();
+			Map<String,Map<String, Map<String, Object>>> map = new HashMap<>();
 
 			// start set data into redis
 			ValueOperations<String, String> ops = redisTemplate.opsForValue();
@@ -49,13 +49,23 @@ public class RedisAddDataController {
 			String line = br.readLine();
 			while(line != null) {
 				String[] items = line.split(",");
-
-				Map<String, Object> dealerMap = new HashMap<>();
-				dealerMap.put("StockDepth", Float.valueOf(items[1]));
-				dealerMap.put("FundStatus", Float.valueOf(items[2]));
-				dealerMap.put("SalesAbility", Float.valueOf(items[3]));
 				Random random = new Random();
-				dealerMap.put("weight", random.nextInt(10)+1);
+				Map<String, Map<String, Object>> dealerMap = new HashMap<>();
+				Map<String, Object> valueMap = new HashMap<>();
+				valueMap.put("value", Float.valueOf(items[1]));
+				valueMap.put("weigth", random.nextInt(10)+1);
+				dealerMap.put("StockDepth", valueMap);
+
+				Map<String, Object> valueMap2 = new HashMap<>();
+				valueMap2.put("value", Float.valueOf(items[2]));
+				valueMap2.put("weigth", random.nextInt(10)+1);
+				dealerMap.put("FundStatus", valueMap2);
+
+				Map<String, Object> valueMap3 = new HashMap<>();
+				valueMap3.put("value", Float.valueOf(items[3]));
+				valueMap3.put("weigth", random.nextInt(10)+1);
+				dealerMap.put("SalesAbility", valueMap3);
+
 				map.put(items[0], dealerMap);
 
 				line = br.readLine();
