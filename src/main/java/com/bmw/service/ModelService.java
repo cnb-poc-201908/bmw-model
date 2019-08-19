@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import com.bmw.common.BMWPocConstants;
+
 @Service
 public class ModelService {
 
@@ -65,6 +67,20 @@ public class ModelService {
 	}
 
 	public Map<String, Map<String, Object>> getOEMModel() {
+		return oemModel;
+	}
+
+	public Map<String, Map<String, Object>> updateOEMModel(Map<String, Map<String, Object>> model) {
+		Iterator<String> it = model.keySet().iterator();
+		if(!model.isEmpty()) {
+			while(it.hasNext()) {
+				String key =  it.next();
+				Map<String, Object> modelItem = oemModel.get(key);
+				Map<String, Object> newModelItem = model.get(key);
+				modelItem.put(BMWPocConstants.KEY_NAME_WEIGHT,
+						newModelItem.get(BMWPocConstants.KEY_NAME_WEIGHT));
+			}
+		}
 		return oemModel;
 	}
 }

@@ -60,6 +60,15 @@ public class ModelController {
 		return response;
 	}
 
+	@PutMapping(value = "/oem/update", produces = "application/json")
+	@ApiOperation(value = "厂家订单模型修改接口")
+	public RestResponse<Map<String, Map<String, Object>>> updateOEMModel(
+			@RequestBody Map<String, Map<String, Object>> model) {
+		RestResponse<Map<String, Map<String, Object>>> response = new RestResponse<>();
+		response.setData(modelService.updateOEMModel(model));
+		return response;
+	}
+
 	@GetMapping(value = "/{dealerId}", produces = "application/json")
 	@ApiOperation(value = "订单匹配模型详情接口")
 	public RestResponse<Map<String, Map<String, Object>>> getModel(
