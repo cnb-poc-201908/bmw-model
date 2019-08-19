@@ -93,7 +93,7 @@ public class RedisAddDataController {
 			colorMap.put("colors", colorList);
 
 			Map<String, Object> upholsteryMap = new HashMap<>();
-			upholsteryMap.put(BMWPocConstants.KEY_NAME_WEIGHT, 2);
+			upholsteryMap.put(BMWPocConstants.KEY_NAME_WEIGHT, 5);
 			String[] upholsteries = new String[] {"KCMY", "KCSW", "LCL5", "LCMY"};
 			List<Map<String, Object>> upholsteryList = new ArrayList<>();
 			for(String upholstery : upholsteries) {
@@ -108,7 +108,7 @@ public class RedisAddDataController {
 
 
 			Map<String, Object> configMap = new HashMap<>();
-			configMap.put(BMWPocConstants.KEY_NAME_WEIGHT, 1);
+			configMap.put(BMWPocConstants.KEY_NAME_WEIGHT, 5);
 			String[] configs = new String[] {"201805ZOM", "201809ZMC", "201809ZLS", "201809ZOM", "201709ZLS", "201805ZSM", "201801ZSM",
 					"201801ZLS", "201805ZLS", "201709ZSM", "201609ZLU", "201809ZSM", "201609ZOM"};
 			List<Map<String, Object>> configList = new ArrayList<>();
@@ -122,9 +122,24 @@ public class RedisAddDataController {
 			}
 			configMap.put("configs", configList);
 
+			Map<String, Object> addMap = new HashMap<>();
+			addMap.put(BMWPocConstants.KEY_NAME_WEIGHT, 3);
+			String[] addCodes = new String[] {"ZWP", "ZCC"};
+			List<Map<String, Object>> addCodeList = new ArrayList<>();
+			for(String addCode : addCodes) {
+				Map<String, Object> addItem = new HashMap<>();
+				Map<String, Object> addWeigth = new HashMap<>();
+				addWeigth.put(BMWPocConstants.KEY_NAME_VALUE, getRandomValue(random));
+				addWeigth.put(BMWPocConstants.KEY_NAME_WEIGHT, random.nextInt(10)+1);
+				addItem.put(addCode, addWeigth);
+				addCodeList.add(addItem);
+			}
+			addMap.put("adds", addCodeList);
+
 			oemMap.put("color", colorMap);
 			oemMap.put("upholstery", upholsteryMap);
 			oemMap.put("config", configMap);
+			oemMap.put("add", addMap);
 
 			ops.set(BMWPocConstants.REDIS_OEM_MODEL_KEY, objectMapper.writeValueAsString(oemMap));
 
